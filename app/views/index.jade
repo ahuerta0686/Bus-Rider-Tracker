@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  div(ng-controller='HomeController')
+    h1= title
+    form(action='/addrider' class='form-inline' method='post')
+      div(class='form-group')
+        label(class='sr-only') First Name
+        input(type='text' class='form-control' name='firstName' placeholder='First Name')
+      div(class='form-group')
+        label(class='sr-only') Last Name
+        input(type='text' class='form-control' name='lastName' placeholder='Last Name')
+      div(class='form-group')
+        label(class='sr-only') Phone Number
+        input(type='text' class='form-control' name='phoneNumber' placeholder='Phone Number')
+      div(class='form-group')
+        button(type='submit' class='btn btn-primary') Add Rider
+
+    each person in people
+      div(class='card')
+        div(class='card-block')
+          div(class='card-text')
+            div(class='row')
+              div(class='col-sm-3') #{person.lastName}, #{person.firstName}
+              //- div(class='col-sm-2') #{person.firstName}
+              div(class='col-sm-3') #{person.phoneNumber}
+              if person.boardedHome
+                button(type='button' class='btn btn-primary disabled col-sm-2') Boarded Home
+              else
+                form(action='/board' method='post')
+                  input(type='hidden' name='personId' value='#{person._id}')
+                  button(type='submit' class='btn btn-primary col-sm-2' name='boardingType' value='home') Board Home
+              div(class='col-sm-1')
+              if person.boardedRemote
+                button(type='button' class='btn btn-primary disabled col-sm-2') Boarded Remote
+              else
+                form(action='/board' method='post')
+                  input(type='hidden' name='personId' value='#{person._id}')
+                  button(type='submit' class='btn btn-primary col-sm-2' name='boardingType' value='remote') Board Remote
